@@ -10,6 +10,10 @@ public:
 	void setLexeme(std::string);
 
 	void clear();
+
+	/****Constructor********/
+	LContainer();
+	LContainer(std::string Token,std::string Lexeme);
 	
 private:
 	std::string _token;

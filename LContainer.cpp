@@ -25,3 +25,15 @@ void LContainer::clear()
 	_token.clear();
 	_lexeme.clear();
 }
+
+LContainer::LContainer()
+{
+}
+
+LContainer::LContainer(std::string Token, std::string Lexeme)
+{
+	setToken(Token);
+	setLexeme(Lexeme);
+}
+
+

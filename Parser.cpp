@@ -3,123 +3,140 @@
 int Parser(std::vector<LContainer> lcList)
 {
 	LContainer* lcptr = &lcList.front();
-	Expression(lcptr, (&lcList.back()));
+	std::cout << "Token: " << lcptr->getToken() << "    Lexeme: " << lcptr->getLexeme() << std::endl;
+	Expression(lcptr);
 	std::cout << "\nSuccess I bet. If not it ill say so\n";
 	std::cin.get();
 
 	return 0;
 }
 
-LContainer* match(std::string terminal, LContainer* givenlc, LContainer* lcvend)
+void match(std::string terminal, LContainer* &lcptr) // This function is the end of a branch of the tree, as in the leaves. 
 {
-	if (givenlc->getLexeme().compare(terminal))
+	if (lcptr->getLexeme().compare(terminal) == 0)
 	{
-		std::cout << "Token: " << givenlc->getToken() << "    Lexeme: " << givenlc->getLexeme() << std::endl;
+			++lcptr;
+			if (lcptr->getLexeme().compare("EOF") != 0)
+			{
+				std::cout << "\nToken: " << lcptr->getToken() << "    Lexeme: " << lcptr->getLexeme() << std::endl;
+				return;
+			}
 	}
 	else
 	{
 		std::cout << "\nThis statement not syntaxtically correct";
 	}
-	
-	if (givenlc != lcvend) //FIXME: It's supposed to stop the program but something is wrong, will go on infinite loop.
-		return ++givenlc;
-	else
-		return givenlc;
+	return;
 }
 
-void Expression(LContainer* lcptr, LContainer* lcvend) // E -> TE'
+void Expression(LContainer* &lcptr) // E -> TE'
 {
+	
+	if (lcptr->getLexeme().compare("EOF") != 0)
 	std::cout << "<Expression> -> <Term> <ExpressionPrime>\n";
-	Term(lcptr, lcvend);
-	ExpressionPrime(lcptr, lcvend);
+
+	Term(lcptr);
+	ExpressionPrime(lcptr);
 	
 }
 
-void ExpressionPrime(LContainer* lcptr, LContainer* lcvend) //E'-> +TE' | -TE' | EPSILON
+void ExpressionPrime(LContainer* &lcptr) //E'-> +TE' | -TE' | EPSILON
 {
+	if (lcptr->getLexeme().compare("EOF") != 0)
 	std::cout << "<ExpressionPrime> -> + <Term> <ExpressionPrime> | - <Term> <ExpressionPrime> | EPSILON\n";
-	if (lcptr->getLexeme().compare("+")) //E' -> +TE'
+
+	if (lcptr->getLexeme().compare("+") == 0 ) //E' -> +TE'
 	{
 		
-		lcptr = match("+", lcptr, lcvend);
-		Term(lcptr, lcvend);
-		ExpressionPrime(lcptr, lcvend);
+		match("+", lcptr);
+		Term(lcptr);
+		ExpressionPrime(lcptr);
 	}
-	else if (lcptr->getLexeme().compare("-")) // E' -> -TE'
+	else if (lcptr->getLexeme().compare("-") == 0) // E' -> -TE'
 	{
-		lcptr = match("-", lcptr, lcvend);
-		Term(lcptr, lcvend);
-		ExpressionPrime(lcptr, lcvend);
+		match("-", lcptr);
+		Term(lcptr);
+		ExpressionPrime(lcptr);
 	}
 	else { return; }  // E' -> EPSILON
 }
 
-void Term(LContainer* lcptr, LContainer* lcvend) //T -> FT'
+void Term(LContainer* &lcptr) //T -> FT'
 {
+	if (lcptr->getLexeme().compare("EOF") != 0)
 	std::cout << "<Type> -> <Factor> <TermPrime>\n";
-	Factor(lcptr, lcvend);
-	TermPrime(lcptr, lcvend);
+
+	Factor(lcptr);
+	TermPrime(lcptr);
 }
 
-void TermPrime(LContainer* lcptr, LContainer* lcvend) // T' -> *FT' | /FT' | EPSILON
+void TermPrime(LContainer* &lcptr) // T' -> *FT' | /FT' | EPSILON
 {
+	if (lcptr->getLexeme().compare("EOF") != 0)
 	std::cout << "<TermPrime> -> * <Factor> <TermPrime> | / <Factor> <TermPrime> | EPSILON\n";
-	if (lcptr->getLexeme().compare("*")) //T' -> *FT'
+
+	if (lcptr->getLexeme().compare("*") == 0) //T' -> *FT'
 	{
-		lcptr = match("*", lcptr, lcvend);
-		Factor(lcptr, lcvend);
-		TermPrime(lcptr, lcvend);
+		match("*", lcptr);
+		Factor(lcptr);
+		TermPrime(lcptr);
 	}
-	else if (lcptr->getLexeme().compare("/")) // T' -> /FT'
+	else if (lcptr->getLexeme().compare("/") == 0) // T' -> /FT'
 	{
-		lcptr = match("/", lcptr, lcvend);
-		Factor(lcptr, lcvend);
-		TermPrime(lcptr, lcvend);
+		match("/", lcptr);
+		Factor(lcptr);
+		TermPrime(lcptr);
 	}
 	else { return; }  // E' -> EPSILON
 }
 
-void Factor(LContainer* lcptr, LContainer* lcvend) // F -> (E) | I | N
+void Factor(LContainer* &lcptr) // F -> (E) | I | N
 {
+	if (lcptr->getLexeme().compare("EOF") != 0)
 	std::cout << "<Factor> -> ( <Expression> ) | <ID> | <NUM>\n";
-	if (lcptr->getLexeme().compare("(")) // F-> (E)
+
+	if (lcptr->getLexeme().compare("(") == 0) // F-> (E)
 	{
-		lcptr = match("(", lcptr, lcvend);
-		Expression(lcptr, lcvend);
-		lcptr = match(")", lcptr, lcvend);
+		match("(", lcptr);
+		Expression(lcptr);
+		match(")", lcptr);
 	}
-	else if (lcptr->getToken().compare("IDENTIFIER")) // F -> I 
+	else if (lcptr->getToken().compare("IDENTIFIER") == 0) // F -> I 
 	{
-		ID(lcptr, lcvend);
+		ID(lcptr);
 	}
-	else if (lcptr->getToken().compare("NUMBER")) // F -> N
+	else if (lcptr->getToken().compare("NUMBER") == 0) // F -> N
 	{
-		Num(lcptr, lcvend);
+		Num(lcptr);
 	}
 }
 
-void ID(LContainer* lcptr, LContainer* lcvend) // I -> id
+void ID(LContainer* &lcptr) // I -> id
 {
+	if (lcptr->getLexeme().compare("EOF") != 0)
 	std::cout << "<ID> -> id\n";
-	if (lcptr->getToken().compare("IDENTIFIER"))
+
+	if (lcptr->getToken().compare("IDENTIFIER\0") == 0)
 	{
-		lcptr = match(lcptr->getLexeme(), lcptr, lcvend);
+		match(lcptr->getLexeme(), lcptr);
 	}
 	else
 	{
-		lcptr = match("Error", lcptr, lcvend);
+		match("Error", lcptr);
 	}
 }
 
-void Num(LContainer* lcptr, LContainer* lcvend) // N -> num
+void Num(LContainer* &lcptr) // N -> num
 {
+	if (lcptr->getLexeme().compare("EOF") != 0)
 	std::cout << "<NUM> -> num";
-	if (lcptr->getToken().compare("NUMBER"))
+
+	if (lcptr->getToken().compare("NUMBER") == 0)
 	{
-		lcptr = match(lcptr->getLexeme(), lcptr, lcvend);
+		match(lcptr->getLexeme(), lcptr);
 	}
 	else
 	{
-		lcptr = match("Error", lcptr, lcvend);
+		match("Error", lcptr);
 	}
 }

@@ -5,15 +5,15 @@
 
 int Parser(std::vector<LContainer>);
 
-LContainer* match(std::string,LContainer*, std::size_t);
+void match(std::string,LContainer* &);
 
-void Expression(LContainer*, LContainer*);
-void ExpressionPrime(LContainer*, LContainer* lcvend);
-void Term(LContainer*, LContainer* lcvend);
-void TermPrime(LContainer*, LContainer* lcvend);
-void Factor(LContainer*, LContainer* lcvend);
-void ID(LContainer*, LContainer* lcvend);
-void Num(LContainer*, LContainer* lcvend);
+void Expression(LContainer*&);
+void ExpressionPrime(LContainer*&);
+void Term(LContainer*&);
+void TermPrime(LContainer*&);
+void Factor(LContainer*&);
+void ID(LContainer*&);
+void Num(LContainer*&);
 
 void Statement();
 void Assign();
