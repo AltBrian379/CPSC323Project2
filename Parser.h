@@ -3,22 +3,20 @@
 #include <vector>
 #include <iostream>
 
-int Parser(std::vector<LContainer>);
+int Parser          (std::vector<LContainer>              );
 
-void match(std::string,LContainer* &);
+void match          (std::string            ,LContainer* &);
 
-void Expression(LContainer*&);
-void ExpressionPrime(LContainer*&);
-void Term(LContainer*&);
-void TermPrime(LContainer*&);
-void Factor(LContainer*&);
-void ID(LContainer*&);
-void Num(LContainer*&);
+void Expression     (LContainer* &                        );
+void ExpressionPrime(LContainer* &                        );
+void Term           (LContainer* &                        );
+void TermPrime      (LContainer* &                        );
+void Factor         (LContainer* &                        );
+void ID             (LContainer* &                        );
+void Num            (LContainer* &                        );
 
-void Statement();
-void Assign();
+void Statement      (LContainer* &                        );
+void Assign         (LContainer* &                        );
 
-void Declarative();
-void Type();
-
-void match();
+void Declarative    (LContainer* &                        );
+void Type           (LContainer* &                        );

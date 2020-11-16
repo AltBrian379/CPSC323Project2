@@ -4,7 +4,7 @@ int Parser(std::vector<LContainer> lcList)
 {
 	LContainer* lcptr = &lcList.front();
 	std::cout << "Token: " << lcptr->getToken() << "    Lexeme: " << lcptr->getLexeme() << std::endl;
-	Expression(lcptr);
+	Statement(lcptr);
 	std::cout << "\nSuccess I bet. If not it ill say so\n";
 	std::cin.get();
 
@@ -139,4 +139,63 @@ void Num(LContainer* &lcptr) // N -> num
 	{
 		match("Error", lcptr);
 	}
+}
+
+void Statement      (LContainer* & lcptr                  ) // S -> A | D
+{
+	if (lcptr->getLexeme().compare("EOF") != 0)
+	std::cout << "<Statement> -> <Assignment> | <Declaritive>\n";
+
+	if (lcptr->getToken().compare("IDENTIFIER") == 0)
+	{
+		Assign(lcptr);
+	}
+	else if (lcptr->getToken().compare("KEYWORD") == 0)
+	{
+		Declarative(lcptr);
+	}
+	
+}
+
+
+void Assign         (LContainer* & lcptr                   ) // A -> I=E;
+{
+	if (lcptr->getLexeme().compare("EOF") != 0)
+	std::cout << "<Assign> -> <ID> = <Expressive>; \n";
+
+	ID(lcptr);
+	match("=", lcptr);
+	Expression(lcptr);
+	match(";", lcptr);
+
+}
+
+void Declarative    (LContainer* & lcptr                   ) // D -> YI
+{
+	if (lcptr->getLexeme().compare("EOF") != 0)
+	std::cout << "<Declarative> -> <Type> <ID> \n";
+
+	Type(lcptr);
+	ID(lcptr);
+
+}
+
+void Type           (LContainer* & lcptr                   ) // Y -> bool | float | int
+{
+	if (lcptr->getLexeme().compare("EOF") != 0)
+	std::cout << "<Type> -> bool | float | int \n";
+
+	if(lcptr->getLexeme().compare("bool") == 0) // Y -> bool
+	{
+		match("bool", lcptr);
+	}
+	else if (lcptr->getLexeme().compare("float") == 0) // Y -> float
+	{
+		match("float",lcptr);
+	}
+	else if (lcptr->getLexeme().compare("int") == 0) // Y -> int
+	{
+		match("int",lcptr);
+	}
+
 }
