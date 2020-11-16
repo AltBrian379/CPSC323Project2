@@ -4,7 +4,9 @@ int Parser(std::vector<LContainer> lcList)
 {
 	LContainer* lcptr = &lcList.front();
 	std::cout << "Token: " << lcptr->getToken() << "    Lexeme: " << lcptr->getLexeme() << std::endl;
-	Statement(lcptr);
+	do {
+		Statement(lcptr);
+	} while (lcptr->getLexeme().compare("EOF") != 0);
 	std::cout << "\nSuccess I bet. If not it ill say so\n";
 	std::cin.get();
 
@@ -64,7 +66,7 @@ void ExpressionPrime(LContainer* &lcptr) //E'-> +TE' | -TE' | EPSILON
 void Term(LContainer* &lcptr) //T -> FT'
 {
 	if (lcptr->getLexeme().compare("EOF") != 0)
-	std::cout << "<Type> -> <Factor> <TermPrime>\n";
+	std::cout << "<Term> -> <Factor> <TermPrime>\n";
 
 	Factor(lcptr);
 	TermPrime(lcptr);
@@ -161,7 +163,7 @@ void Statement      (LContainer* & lcptr                  ) // S -> A | D
 void Assign         (LContainer* & lcptr                   ) // A -> I=E;
 {
 	if (lcptr->getLexeme().compare("EOF") != 0)
-	std::cout << "<Assign> -> <ID> = <Expressive>; \n";
+	std::cout << "<Assignment> -> <ID> = <Expression>; \n";
 
 	ID(lcptr);
 	match("=", lcptr);
