@@ -31,7 +31,7 @@ std::vector<LContainer> Execute(FILE* fin) {
 	int         tempi      = 0               ; // A string index for tempString
 	std::string tempString                   ; // C++ version of const char*. 
 	LContainer  lc1                          ; // Initializes a class that will hold information about a Lexeme and Token type.
-	bool        stringFlag = false, tokenFlag; // Flags for knowing stuff
+	bool        stringFlag = false, assignFlag = false; // Flags for knowing stuff, String flag tells us if we are in a string, assignflag tells us if we are to the right of an assign.
 	std::vector<LContainer> lcList;
 	std::string::iterator strindex = tempString.begin();
 	LContainer lcEOF("EOF", "EOF"); //EOF flag to tell the ptr of the vector that this is the last element in the array.
@@ -46,12 +46,17 @@ std::vector<LContainer> Execute(FILE* fin) {
 		do
 		{
 		
-			if (fileChar != '\n' && fileChar != ' ' && fileChar != '=') // If we are not at the end of the file or at a space or an equal
+			if ((fileChar != '\n' && fileChar != ' ' && fileChar != '=') || (fileChar != '\n' && fileChar != ' ' && assignFlag == true)) // If we are not at the end of the file or at a space or an equal
 			{
 				stringFlag          = true;     //We are now reading a string
 				tempString += fileChar; //The character will be saved into the string, the string index will be post incremented.
+				assignFlag = false;
 			}
-			else if (fileChar == ' ' && stringFlag == true)
+			if (fileChar == '=' && stringFlag != true)
+			{
+				assignFlag = true;
+			}
+			if (fileChar == ' ' && stringFlag == true)
 			{
 				//tempString       += '\0' ;    //Since this is the end of the string
 				lc1.setToken(tempString) ;   //In our proprietary Syntax Analyzer, there is a consistant format in our file, so we know that if theres a space, the previous string is a token.
@@ -60,7 +65,7 @@ std::vector<LContainer> Execute(FILE* fin) {
 				stringFlag        = false;   //We are no longer recording a string.
 
 			}
-			else if (fileChar == '\n' && stringFlag == true)
+			if (fileChar == '\n' && stringFlag == true)
 			{
 				//tempString       += '\0' ;   //Since this is the end of the string
 				lc1.setLexeme(tempString);	 //In our proprietary Syntax Analyzer, we know that at a newline, the previous string is a lexeme

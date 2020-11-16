@@ -100,13 +100,13 @@ int Lexile()
 			currentCase = 'A';
 			}
 			else {
-				fprintf(fout,"\nSEPERATOR = %c", givenChar); //Otherwise print whatever seperator it is.
+				fprintf(fout,"\nSEPERATOR = %c\n", givenChar); //Otherwise print whatever seperator it is.
 				currentCase = 'A';
 			}
 			break;
 
 		case 'C':
-			fprintf(fout,"\nOPERATOR = %c", givenChar); // Print the Operator
+			fprintf(fout,"\nOPERATOR = %c\n", givenChar); // Print the Operator
 			currentCase = 'A';
 			break;
 
@@ -157,6 +157,7 @@ int Lexile()
 			else if (givenChar == '!' && isComment) // If it is currently a comment and we get an Exclamation point, start recognizing inputs
 			{
 				currentCase = 'A';
+				isComment = false;
 			}
 			else
 			{
@@ -195,7 +196,7 @@ void printString(char* givenstringArray, const char* keywordBank[], int keywordB
 		fprintf(fout,"\nNUMBER = ");
 		for (int i = 0; givenstringArray[i] != '\0'; ++i)
 		{
-			fprintf(fout,"%c", givenstringArray[i]);
+			fprintf(fout,"%c\n", givenstringArray[i]);
 		}
 		isNumber = false; // Once that is done the charArray is no longer a number
 	}
@@ -205,7 +206,7 @@ void printString(char* givenstringArray, const char* keywordBank[], int keywordB
 
 		for (int i = 0; givenstringArray[i] != '\0' ; ++i)
 		{
-			fprintf(fout,"%c", givenstringArray[i]);
+			fprintf(fout,"%c\n", givenstringArray[i]);
 		}
 	}
 	else // Otherwise print it out as an identifier.
@@ -214,7 +215,7 @@ void printString(char* givenstringArray, const char* keywordBank[], int keywordB
 
 		for (int i = 0; givenstringArray[i] != '\0'; ++i)
 		{
-			fprintf(fout,"%c", givenstringArray[i]);
+			fprintf(fout,"%c\n", givenstringArray[i]);
 		}
 	}
 
