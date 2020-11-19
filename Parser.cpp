@@ -42,10 +42,10 @@ void Expression(LContainer* &lcptr) // E -> TE'
 	
 }
 
-void ExpressionPrime(LContainer* &lcptr) //E'-> +TE' | -TE' | EPSILON
+void ExpressionPrime(LContainer* &lcptr) //E'-> +TE' | -TE' | <Empty>
 {
 	if (lcptr->getLexeme().compare("EOF") != 0)
-	std::cout << "<ExpressionPrime> -> + <Term> <ExpressionPrime> | - <Term> <ExpressionPrime> | EPSILON\n";
+	std::cout << "<ExpressionPrime> -> + <Term> <ExpressionPrime> | - <Term> <ExpressionPrime> | <Empty>\n";
 
 	if (lcptr->getLexeme().compare("+") == 0 ) //E' -> +TE'
 	{
@@ -60,7 +60,11 @@ void ExpressionPrime(LContainer* &lcptr) //E'-> +TE' | -TE' | EPSILON
 		Term(lcptr);
 		ExpressionPrime(lcptr);
 	}
-	else { return; }  // E' -> EPSILON
+	else 
+	{
+		std::cout << "<Empty> -> epsilon\n";
+	        return; 
+	}  // E' -> <EMPTY>
 }
 
 void Term(LContainer* &lcptr) //T -> FT'
@@ -72,10 +76,10 @@ void Term(LContainer* &lcptr) //T -> FT'
 	TermPrime(lcptr);
 }
 
-void TermPrime(LContainer* &lcptr) // T' -> *FT' | /FT' | EPSILON
+void TermPrime(LContainer* &lcptr) // T' -> *FT' | /FT' | <Empty>
 {
 	if (lcptr->getLexeme().compare("EOF") != 0)
-	std::cout << "<TermPrime> -> * <Factor> <TermPrime> | / <Factor> <TermPrime> | EPSILON\n";
+	std::cout << "<TermPrime> -> * <Factor> <TermPrime> | / <Factor> <TermPrime> | <Empty>\n";
 
 	if (lcptr->getLexeme().compare("*") == 0) //T' -> *FT'
 	{
@@ -89,7 +93,11 @@ void TermPrime(LContainer* &lcptr) // T' -> *FT' | /FT' | EPSILON
 		Factor(lcptr);
 		TermPrime(lcptr);
 	}
-	else { return; }  // E' -> EPSILON
+	else 
+	{
+		std::cout << "<Empty> -> epsilon\n";
+		return;
+	}  // E' -> <EMPTY>
 }
 
 void Factor(LContainer* &lcptr) // F -> (E) | I | N
