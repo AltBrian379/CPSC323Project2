@@ -2,21 +2,25 @@
 #include "LContainer.h"
 #include <vector>
 #include <iostream>
+#include <stdio.h>
 
 int Parser          (std::vector<LContainer>              );
 
-void match          (std::string            ,LContainer* &);
+bool match          (std::string            ,LContainer* &, FILE*);
 
-void Expression     (LContainer* &                        );
-void ExpressionPrime(LContainer* &                        );
-void Term           (LContainer* &                        );
-void TermPrime      (LContainer* &                        );
-void Factor         (LContainer* &                        );
-void ID             (LContainer* &                        );
-void Num            (LContainer* &                        );
+bool Expression     (LContainer* &,  FILE*);
+bool ExpressionPrime(LContainer* &,  FILE*);
+bool Term           (LContainer* &,  FILE*);
+bool TermPrime      (LContainer* &,  FILE*);
+bool Factor         (LContainer* &,  FILE*);
+bool ID             (LContainer* &,  FILE*);
+bool Num            (LContainer* &,  FILE*);
 
-void Statement      (LContainer* &                        );
-void Assign         (LContainer* &                        );
+bool Statement      (LContainer* &,  FILE*);
+bool Assign         (LContainer* &,  FILE*);
 
-void Declarative    (LContainer* &                        );
-void Type           (LContainer* &                        );
+bool Declarative    (LContainer* &,  FILE*);
+bool Type           (LContainer* &,  FILE*);
+
+void printToFile(std::string stringPrinted, FILE* fout);
+void printToFile(LContainer*& lcptr, FILE* fout);
