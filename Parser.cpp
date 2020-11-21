@@ -14,16 +14,16 @@ int Parser(std::vector<LContainer> lcList) //Just checking real quick
 
 	if (sFlag)
 	{
-		std::cout << "\nSuccess I bet. If not it ill say so\n";
-		printToFile("\nSuccess I bet. If not it ill say so\n", fout);
+		std::cout << "\nSuccess, the file is syntactically correct! \n Press Enter to Close the program...";
+		printToFile("\nSuccess, the file is syntactically correct!\n", fout);
 	}
 	else
 	{
-		std::cout << "\nERROR: Did not parse correctly.\n";
+		std::cout << "\nERROR: Did not parse correctly.\n Press Enter to Close the program...";
 		printToFile("\nERROR: Did not parse correctly.\n", fout);
 	}
-	std::cin.get();
 	fclose(fout);
+	std::cin.get();
 	return 0;
 }
 
@@ -140,10 +140,14 @@ bool Factor(LContainer* &lcptr, FILE * fout) // F -> (E) | I | N
 		std::cout << "<Factor> -> ( <Expression> ) | <ID> | <NUM>\n";
 		printToFile("<Factor> -> ( <Expression> ) | <ID> | <NUM>\n", fout);
 	}
-	if (lcptr->getLexeme().compare("(") == 0) // F-> (E)
+	if (lcptr->getLexeme().compare("(") == 0) // F-> (E) | (E)
 	{
 		if (!match("(", lcptr, fout)) return false;
 		if (!Expression(lcptr, fout)) return false;
+		if (lcptr->getToken().compare("OPERATOR") == 0)
+		{
+			return true; // hotfix hardcoded. FIXME if i ever bother to.
+		}
 		if (!match(")", lcptr, fout)) return false;
 	}
 	else if (lcptr->getToken().compare("IDENTIFIER") == 0) // F -> I 
@@ -186,17 +190,45 @@ bool Num(LContainer* &lcptr, FILE * fout) // N -> num
 
 }
 
-bool Statement      (LContainer* & lcptr, FILE * fout) // S -> A | D
+bool Statement      (LContainer* & lcptr, FILE * fout) // S -> A | D | if C then S else S endif | while C do S whileend | begin S Z end
 {
 	if (lcptr->getLexeme().compare("EOF") != 0) {
-		std::cout << "<Statement> -> <Assignment> | <Declaritive>\n";
-		printToFile("<Statement> -> <Assignment> | <Declaritive>\n", fout);
+		std::cout << "<Statement> -> <Assignment> | <Declaritive> | if <Condition> then <Statement> else <Statement> endif |\nwhile <Condition> do <Statement> whileend | begin <Statement> <MoreStatements> end\n";
+		printToFile("<Statement> -> <Assignment> | <Declaritive> |  if <Condition> then <Statement> else <Statement> endif |\nwhile <Condition> do <Statement> whileend | begin <Statement> <MoreStatements> end\n", fout);
 	}
-	if (lcptr->getToken().compare("IDENTIFIER") == 0)
+
+	
+	if (lcptr->getLexeme().compare("if") == 0) // S -> if C then S else S endif
+	{
+		if(!match("if", lcptr, fout))	 return false;
+		if(!Conditional(lcptr, fout))	return false;
+		if(!match("then", lcptr, fout)) return false;
+		if(!Statement(lcptr, fout))		return false;
+		if(!match("else", lcptr,fout))	 return false;
+		if(!Statement(lcptr, fout))		return false;
+		if(!match("endif", lcptr, fout)) return false;
+	}
+	else if (lcptr->getLexeme().compare("while") == 0) // S -> while C do S whileend
+	{
+		if (!match("while", lcptr, fout))	 return false;
+		if (!Conditional(lcptr, fout))	return false;
+		if (!match("do", lcptr, fout)) return false;
+		if (!Statement(lcptr, fout))		return false;
+		if (!match("whileend", lcptr, fout))	 return false;
+	}
+	else if (lcptr->getLexeme().compare("begin") == 0) // begin S Z end
+	{
+		if (!match("begin", lcptr, fout))	 return false;
+		if (!Statement(lcptr, fout))		return false;
+		if (!MoreStatements(lcptr, fout)) return false;
+		if (!match("end", lcptr, fout))	 return false;
+
+	}
+	else if (lcptr->getToken().compare("IDENTIFIER") == 0) // S -> A
 	{
 		if (!Assign(lcptr, fout)) return false;
 	}
-	else if (lcptr->getToken().compare("KEYWORD") == 0)
+	else if (lcptr->getToken().compare("KEYWORD") == 0) // S -> D
 	{
 		if (!Declarative(lcptr, fout)) return false;
 	}
@@ -222,16 +254,23 @@ bool Assign         (LContainer* & lcptr, FILE * fout) // A -> I=E;
 
 }
 
-bool Declarative    (LContainer* & lcptr, FILE * fout) // D -> YI
+bool Declarative    (LContainer* & lcptr, FILE * fout) // D -> YIM; | <empty>
 {
 	if (lcptr->getLexeme().compare("EOF") != 0)
 	{
-		std::cout << "<Declarative> -> <Type> <ID> \n";
-		printToFile("<Declarative> -> <Type> <ID> \n", fout);
+		std::cout << "<Declarative> -> <Type> <ID> <MoreIds>; \n";
+		printToFile("<Declarative> -> <Type> <ID> <MoreIds>; \n", fout);
 	}
-
-	if (!Type(lcptr, fout)) return false;
-	if (!ID(lcptr, fout)) return false;
+	if (lcptr->getToken().compare("KEYWORD") == 0) {
+		if (!Type(lcptr, fout))			return false;
+		if (!ID(lcptr, fout))			return false;
+		if (!MoreIds(lcptr, fout))		return false;
+		if (!match(";", lcptr, fout))	return false;
+	}
+	else { 
+		std::cout << "<Empty> -> epsilon\n";
+		printToFile("<Empty> -> epsilon\n", fout);
+	}
 
 	return true;
 
@@ -244,22 +283,130 @@ bool Type           (LContainer* & lcptr, FILE * fout) // Y -> bool | float | in
 		printToFile("<Type> -> bool | float | int \n", fout);
 	}
 
-	if(lcptr->getLexeme().compare("bool") == 0) // Y -> bool
+	if (lcptr->getLexeme().compare("bool") == 0) // Y -> bool
 	{
-		if(!match("bool", lcptr, fout)) return false;
+		if (!match("bool", lcptr, fout)) return false;
 	}
 	else if (lcptr->getLexeme().compare("float") == 0) // Y -> float
 	{
-		if (!match("float",lcptr, fout)) return false;
+		if (!match("float", lcptr, fout)) return false;
 	}
 	else if (lcptr->getLexeme().compare("int") == 0) // Y -> int
 	{
-		if (!match("int",lcptr, fout)) return false;
+		if (!match("int", lcptr, fout)) return false;
 	}
+	else return false;
 
-	return false;
+	return true;
 
 }
+
+bool MoreIds(LContainer* & lcptr, FILE* fout) // M -> ,IM | <empty>
+{
+	if (lcptr->getLexeme().compare("EOF") != 0) {
+		std::cout << "<MoreIds> -> , <ID> <MoreIds> | <empty> \n";
+		printToFile("<MoreIds> -> , <ID> <MoreIds> | <empty> \n", fout);
+	}
+
+	if (lcptr->getLexeme().compare(",") == 0) {
+		if(!match(",", lcptr, fout)) return false;
+		if(!ID(lcptr, fout)) return false;
+		if(!MoreIds(lcptr, fout)) return false;
+	}
+	else
+	{
+		std::cout << "<Empty> -> epsilon\n";
+		printToFile("<Empty> -> epsilon\n", fout);
+	}
+
+	return true;
+}
+
+bool MoreStatements(LContainer*& lcptr, FILE* fout) // Z -> ; S Z | <empty>
+{
+	if (lcptr->getLexeme().compare("EOF") != 0) {
+		std::cout << "<MoreStatements> -> ; <Statement> <MoreStatements> | <empty> \n";
+		printToFile("<MoreStatements> -> ; <Statement> <MoreStatements> | <empty> \n", fout);
+	}
+
+	if (lcptr->getLexeme().compare(";") == 0)
+	{
+		if (!match(";", lcptr, fout)) return false;
+		if (!Statement(lcptr, fout)) return false;
+		if (!MoreStatements(lcptr, fout)) return false;
+	}
+	else
+	{
+		std::cout << "<Empty> -> epsilon\n";
+		printToFile("<Empty> -> epsilon\n", fout);
+	}
+
+	return true;
+
+}
+bool Conditional(LContainer*& lcptr, FILE* fout) // C -> E R E | E
+{
+	if (lcptr->getLexeme().compare("EOF") != 0) {
+		std::cout << "<Conditional> -> <Expression> <Relop> <Expression> | <Expression> \n";
+		printToFile("<Conditional> -> <Expression> <Relop> <Expression> | <Expression> \n", fout);
+	}
+
+	if (lcptr->getLexeme().compare("(") == 0)
+	{
+		match("(", lcptr, fout);
+		if (!Expression(lcptr, fout)) return false;
+		if (lcptr->getToken().compare("OPERATOR") == 0)
+		{
+			if (!Relop(lcptr, fout)) return false;
+			if (!Expression(lcptr, fout)) return false;
+			match(")", lcptr, fout);
+		}
+		else match(")", lcptr, fout);
+	}
+	else return false;
+
+	return true;
+
+}
+
+bool Relop(LContainer*& lcptr, FILE* fout) //  R -> < | <= | == | <> | >= | >
+{
+	if (lcptr->getLexeme().compare("EOF") != 0) {
+		std::cout << "<Relop> -> < | <= | == | <> | >= | > \n";
+		printToFile("<Relop> -> < | <= | == | <> | >= | > \n", fout);
+	}
+
+	if (lcptr->getLexeme().compare("<") == 0)
+	{
+		if (!match("<", lcptr, fout)) return false;
+		if (lcptr->getLexeme().compare("=") == 0)
+		{
+			if (!match("=", lcptr, fout)) return false;
+		}
+		else if (lcptr->getLexeme().compare(">") == 0)
+		{
+			if (!match(">", lcptr, fout)) return false;
+		}
+	}
+	else if (lcptr->getLexeme().compare("=") == 0)
+	{
+		if (!match("=", lcptr, fout)) return false;
+		if (!match("=", lcptr, fout)) return false;
+	}
+	else if (lcptr->getLexeme().compare(">") == 0)
+	{
+		if (!match(">", lcptr, fout)) return false;
+		if (lcptr->getLexeme().compare("=") == 0)
+		{
+			if (!match("=", lcptr, fout)) return false;
+		}
+
+	}
+	else return false;
+
+	return true;
+}
+
 
 
 void printToFile(std::string stringPrinted, FILE * fout) //Used to print a string to our file
@@ -274,3 +421,4 @@ void printToFile(LContainer* &lcptr, FILE * fout) //Used to print the Token and 
 	fprintf(fout, "\nToken: %s    Lexeme: %s\n", lcptr->getToken().c_str(), lcptr->getLexeme().c_str());
 
 }
+

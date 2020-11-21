@@ -21,6 +21,11 @@ bool Assign         (LContainer* &,  FILE*);
 
 bool Declarative    (LContainer* &,  FILE*);
 bool Type           (LContainer* &,  FILE*);
+bool MoreIds		(LContainer* &,	 FILE*);
+
+bool MoreStatements	(LContainer*&, FILE*);
+bool Conditional	(LContainer*&, FILE*);
+bool Relop			(LContainer*&, FILE*);
 
 void printToFile(std::string stringPrinted, FILE* fout);
 void printToFile(LContainer*& lcptr, FILE* fout);

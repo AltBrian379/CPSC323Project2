@@ -91,6 +91,14 @@ int Lexile()
 				}
 				goto SWITCHCASE;
 			}
+			else if (givenChar == '\n' && isString)
+			{
+				charArray[indexNum] = '\0';
+				printString(charArray, keywordBank, 20, isNumber, fout);
+				memset(charArray, 0, sizeof(BUFSIZ));
+				indexNum = 0;
+				isString = false;
+			}
 
 			break;
 		case 'B':
@@ -196,7 +204,7 @@ void printString(char* givenstringArray, const char* keywordBank[], int keywordB
 		fprintf(fout,"\nNUMBER = ");
 		for (int i = 0; givenstringArray[i] != '\0'; ++i)
 		{
-			fprintf(fout,"%c\n", givenstringArray[i]);
+			fprintf(fout,"%c", givenstringArray[i]);
 		}
 		isNumber = false; // Once that is done the charArray is no longer a number
 	}
@@ -206,7 +214,7 @@ void printString(char* givenstringArray, const char* keywordBank[], int keywordB
 
 		for (int i = 0; givenstringArray[i] != '\0' ; ++i)
 		{
-			fprintf(fout,"%c\n", givenstringArray[i]);
+			fprintf(fout,"%c", givenstringArray[i]);
 		}
 	}
 	else // Otherwise print it out as an identifier.
@@ -215,7 +223,7 @@ void printString(char* givenstringArray, const char* keywordBank[], int keywordB
 
 		for (int i = 0; givenstringArray[i] != '\0'; ++i)
 		{
-			fprintf(fout,"%c\n", givenstringArray[i]);
+			fprintf(fout,"%c", givenstringArray[i]);
 		}
 	}
 
