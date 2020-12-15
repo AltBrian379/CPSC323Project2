@@ -5,6 +5,7 @@
 #include "LContainer.h"
 #include "Parser.h"
 #include "Lexile.h"
+#include "StackParser.h"
 
 //First Mission: Decode each line of the output from the lexile analyzer into classes of Leximes and Tokens -Done
 	//Second Mission: Be able to traverse the 'class array' of Tokens and Lexemes -Done
@@ -21,6 +22,7 @@ int main()
 {
 
 	Lexile(); // Run our legacy lexile analyzer. Will output our Lexoutput.txt
+	StackParser(Execute(fopen("Lexoutput.txt", "r")));
 	Parser(Execute(fopen("Lexoutput.txt", "r"))); // We open the file
 	
 	return 0;

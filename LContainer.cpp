@@ -36,4 +36,10 @@ LContainer::LContainer(std::string Token, std::string Lexeme)
 	setLexeme(Lexeme);
 }
 
+LContainer LContainer::makeLContainer(std::string givenToken, std::string givenLexeme)
+{
+	LContainer returnLContainer(givenToken, givenLexeme);
+	return returnLContainer;
+}
+
 

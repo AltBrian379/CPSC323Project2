@@ -2,8 +2,8 @@
 
 int Parser(std::vector<LContainer> lcList) //Just checking real quick
 {
-	LContainer* lcptr = &lcList.front();
-	bool sFlag = true;
+	LContainer* lcptr = &lcList.front(); // Pointer to first element.
+	bool sFlag = true; //flag to tell us if the stack parsed correctly
 	FILE* fout = fopen("syntaxoutput.txt", "w");
 
 	std::cout << "Token: " << lcptr->getToken() << "    Lexeme: " << lcptr->getLexeme() << std::endl;

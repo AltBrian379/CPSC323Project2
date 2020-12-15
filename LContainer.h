@@ -14,6 +14,9 @@ public:
 	/****Constructor********/
 	LContainer();
 	LContainer(std::string Token,std::string Lexeme);
+
+	/***Instantaneous return(Not working and not used)****/
+	LContainer makeLContainer(std::string Token, std::string Lexeme);
 	
 private:
 	std::string _token;
