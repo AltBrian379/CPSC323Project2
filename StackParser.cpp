@@ -75,6 +75,15 @@ bool ProductionAction(LContainer*& lcptr, std::stack<LContainer>& lcStack,FILE* 
 	LContainer poppedlcStack = lcStack.top();	// We save the top of the stack
 	lcStack.pop();								// We pop the top element;
 
+	if (lcStack.size() == 0)
+	{
+		LContainer lcDollar("$", "$");          //We push in the $ and Starting Point once stack is empty
+		lcStack.push(lcDollar);
+		LContainer lcStarter("NONTERMINAL", "S");
+		lcStack.push(lcStarter);
+		return true;
+	}
+
 	if (poppedlcStack.getToken() == "NONTERMINAL")
 	{
 		printRule(poppedlcStack,fout);
