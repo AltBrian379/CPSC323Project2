@@ -20,10 +20,15 @@ std::vector<LContainer> Execute(FILE*);
 
 int main()
 {
-
+	std::cout << "SyntaxAnalyzer.exe - Version 2.1 Written by Brian Altamirano and Omar Mann\n"
+		<< "=============================================================================\n"
+		<< "Info: This program will parse using two different strategies\n"
+		<< "First using a Top Down Predictive Parsing table and then\n"
+		<< "using a Recursive Descent Parser. It will output two files:\n"
+		<< "StackSyntaxOutput and SyntaxOutput.txt.\n\n";
 	Lexile(); // Run our legacy lexile analyzer. Will output our Lexoutput.txt
-	StackParser(Execute(fopen("Lexoutput.txt", "r")));
-	Parser(Execute(fopen("Lexoutput.txt", "r"))); // We open the file
+	StackParser(Execute(fopen("Lexoutput.txt", "r"))); //we open the file and execute Table parsing
+	Parser(Execute(fopen("Lexoutput.txt", "r"))); // We open the file and execute rdp
 	
 	return 0;
 }

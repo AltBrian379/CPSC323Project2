@@ -1,0 +1,41 @@
+String input: x = a + b ; $ 
+
+
+Token: IDENTIFIER    Lexeme: x
+<Statement> -> <Assignment> | <Declaritive>
+<Assignment> -> <ID> = <Expression>; 
+<ID> -> id
+
+
+Token: OPERATOR    Lexeme: =
+
+
+Token: IDENTIFIER    Lexeme: a
+<Expression> -> <Term> <ExpressionPrime>
+<Term> -> <Factor> <TermPrime>
+<Factor> -> ( <Expression> ) | <ID> | <NUM>
+<ID> -> id
+
+
+Token: OPERATOR    Lexeme: +
+<TermPrime> -> * <Factor> <TermPrime> | / <Factor> <TermPrime> | <Empty>
+<Empty> -> epsilon
+<ExpressionPrime> -> + <Term> <ExpressionPrime> | - <Term> <ExpressionPrime> | <Empty>
+
+
+Token: IDENTIFIER    Lexeme: b
+<Term> -> <Factor> <TermPrime>
+<Factor> -> ( <Expression> ) | <ID> | <NUM>
+<ID> -> id
+
+
+Token: SEPERATOR    Lexeme: ;
+<TermPrime> -> * <Factor> <TermPrime> | / <Factor> <TermPrime> | <Empty>
+<Empty> -> epsilon
+<ExpressionPrime> -> + <Term> <ExpressionPrime> | - <Term> <ExpressionPrime> | <Empty>
+<Empty> -> epsilon
+
+
+Token: $    Lexeme: $
+
+Success, the file is syntactically correct!

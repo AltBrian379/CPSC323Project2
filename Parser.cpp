@@ -4,7 +4,9 @@ int Parser(std::vector<LContainer> lcList) //Just checking real quick
 {
 	LContainer* lcptr = &lcList.front(); // Pointer to first element.
 	bool sFlag = true; //flag to tell us if the stack parsed correctly
-	FILE* fout = fopen("syntaxoutput.txt", "w");
+	FILE* fout = fopen("SyntaxOutput.txt", "w");
+
+	std::cout << "Launching RDP Parser, Written by Brian Altamirano and Omar Mann\n\n";
 
 	std::cout << "Token: " << lcptr->getToken() << "    Lexeme: " << lcptr->getLexeme() << std::endl;
 	printToFile(lcptr, fout);
@@ -14,12 +16,12 @@ int Parser(std::vector<LContainer> lcList) //Just checking real quick
 
 	if (sFlag)
 	{
-		std::cout << "\nSuccess, the file is syntactically correct! \n Press Enter to Close the program...";
+		std::cout << "\nSuccess, the file is syntactically correct! \n Press Enter to Close the program...\n\n";
 		printToFile("\nSuccess, the file is syntactically correct!\n", fout);
 	}
 	else
 	{
-		std::cout << "\nERROR: Did not parse correctly.\n Press Enter to Close the program...";
+		std::cout << "\nERROR: Did not parse correctly.\n Press Enter to Close the program...\n\n";
 		printToFile("\nERROR: Did not parse correctly.\n", fout);
 	}
 	fclose(fout);
