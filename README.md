@@ -1,7 +1,7 @@
 # CPSC323 Project 2 Syntax Analysis Parser
 An implementation of a lexile and syntax analyzer. It is implemented using Recusrive Descent Parsing and Top Down Predictive Parsing table with pre-defined grammar rules. 
 
-#The Project
+# The Project
 ## Problem Statement
 Adding a table driven parser using a stack to syntax analyzer. Analyzes if a given input statement is lexically and  syntactically correct  by using predefined grammar rules.The analyzer must be built using a top-down parser method.
 
