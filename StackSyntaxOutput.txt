@@ -1,0 +1,143 @@
+String input: x = a + b ; z = c + d ; a = e - f ; b = g * n ; $ 
+
+
+Token: IDENTIFIER    Lexeme: x
+<Statement> -> <Assignment> | <Declaritive>
+<Assignment> -> <ID> = <Expression>; 
+<ID> -> id
+
+
+Token: OPERATOR    Lexeme: =
+
+
+Token: IDENTIFIER    Lexeme: a
+<Expression> -> <Term> <ExpressionPrime>
+<Term> -> <Factor> <TermPrime>
+<Factor> -> ( <Expression> ) | <ID> | <NUM>
+<ID> -> id
+
+
+Token: OPERATOR    Lexeme: +
+<TermPrime> -> * <Factor> <TermPrime> | / <Factor> <TermPrime> | <Empty>
+<Empty> -> epsilon
+<ExpressionPrime> -> + <Term> <ExpressionPrime> | - <Term> <ExpressionPrime> | <Empty>
+
+
+Token: IDENTIFIER    Lexeme: b
+<Term> -> <Factor> <TermPrime>
+<Factor> -> ( <Expression> ) | <ID> | <NUM>
+<ID> -> id
+
+
+Token: SEPERATOR    Lexeme: ;
+<TermPrime> -> * <Factor> <TermPrime> | / <Factor> <TermPrime> | <Empty>
+<Empty> -> epsilon
+<ExpressionPrime> -> + <Term> <ExpressionPrime> | - <Term> <ExpressionPrime> | <Empty>
+<Empty> -> epsilon
+
+
+Token: IDENTIFIER    Lexeme: z
+<Statement> -> <Assignment> | <Declaritive>
+<Assignment> -> <ID> = <Expression>; 
+<ID> -> id
+
+
+Token: OPERATOR    Lexeme: =
+
+
+Token: IDENTIFIER    Lexeme: c
+<Expression> -> <Term> <ExpressionPrime>
+<Term> -> <Factor> <TermPrime>
+<Factor> -> ( <Expression> ) | <ID> | <NUM>
+<ID> -> id
+
+
+Token: OPERATOR    Lexeme: +
+<TermPrime> -> * <Factor> <TermPrime> | / <Factor> <TermPrime> | <Empty>
+<Empty> -> epsilon
+<ExpressionPrime> -> + <Term> <ExpressionPrime> | - <Term> <ExpressionPrime> | <Empty>
+
+
+Token: IDENTIFIER    Lexeme: d
+<Term> -> <Factor> <TermPrime>
+<Factor> -> ( <Expression> ) | <ID> | <NUM>
+<ID> -> id
+
+
+Token: SEPERATOR    Lexeme: ;
+<TermPrime> -> * <Factor> <TermPrime> | / <Factor> <TermPrime> | <Empty>
+<Empty> -> epsilon
+<ExpressionPrime> -> + <Term> <ExpressionPrime> | - <Term> <ExpressionPrime> | <Empty>
+<Empty> -> epsilon
+
+
+Token: IDENTIFIER    Lexeme: a
+<Statement> -> <Assignment> | <Declaritive>
+<Assignment> -> <ID> = <Expression>; 
+<ID> -> id
+
+
+Token: OPERATOR    Lexeme: =
+
+
+Token: IDENTIFIER    Lexeme: e
+<Expression> -> <Term> <ExpressionPrime>
+<Term> -> <Factor> <TermPrime>
+<Factor> -> ( <Expression> ) | <ID> | <NUM>
+<ID> -> id
+
+
+Token: OPERATOR    Lexeme: -
+<TermPrime> -> * <Factor> <TermPrime> | / <Factor> <TermPrime> | <Empty>
+<Empty> -> epsilon
+<ExpressionPrime> -> + <Term> <ExpressionPrime> | - <Term> <ExpressionPrime> | <Empty>
+
+
+Token: IDENTIFIER    Lexeme: f
+<Term> -> <Factor> <TermPrime>
+<Factor> -> ( <Expression> ) | <ID> | <NUM>
+<ID> -> id
+
+
+Token: SEPERATOR    Lexeme: ;
+<TermPrime> -> * <Factor> <TermPrime> | / <Factor> <TermPrime> | <Empty>
+<Empty> -> epsilon
+<ExpressionPrime> -> + <Term> <ExpressionPrime> | - <Term> <ExpressionPrime> | <Empty>
+<Empty> -> epsilon
+
+
+Token: IDENTIFIER    Lexeme: b
+<Statement> -> <Assignment> | <Declaritive>
+<Assignment> -> <ID> = <Expression>; 
+<ID> -> id
+
+
+Token: OPERATOR    Lexeme: =
+
+
+Token: IDENTIFIER    Lexeme: g
+<Expression> -> <Term> <ExpressionPrime>
+<Term> -> <Factor> <TermPrime>
+<Factor> -> ( <Expression> ) | <ID> | <NUM>
+<ID> -> id
+
+
+Token: OPERATOR    Lexeme: *
+<TermPrime> -> * <Factor> <TermPrime> | / <Factor> <TermPrime> | <Empty>
+
+
+Token: IDENTIFIER    Lexeme: n
+<Factor> -> ( <Expression> ) | <ID> | <NUM>
+<ID> -> id
+
+
+Token: SEPERATOR    Lexeme: ;
+<TermPrime> -> * <Factor> <TermPrime> | / <Factor> <TermPrime> | <Empty>
+<Empty> -> epsilon
+<ExpressionPrime> -> + <Term> <ExpressionPrime> | - <Term> <ExpressionPrime> | <Empty>
+<Empty> -> epsilon
+
+
+Token: $    Lexeme: $
+
+Success, the file is syntactically correct!
