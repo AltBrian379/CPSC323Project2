@@ -116,7 +116,7 @@ This implementation makes use of a stack to keep track of possible terminal/nont
 
 TODO: Parsing Table image
 
-## Major Product Functions 
+### Major Product Functions 
 
 Lexical Analyzer - 
 Lexile() -reads source code on the text file and gives the token type and lexeme of keywords,identifiers operators,etc.
@@ -155,7 +155,7 @@ StackParser() - main parsing function that initializes stack with starting symbo
 ProductionAction()- function contained in the while loop of StackParser, controls the pushes and pops on the stack  for the current token
 Lexer() - Increments the pointer of the input string when a terminal is popped from the stack.
 
-# Limitations
+## Limitations
 The program is limited to the file type that can be taken as input and the output type. The program can only take in txt files named “input.txt” and will only output files called “Lexoutput.txt” & “syntaxoutput.txt”. 
 
 The program is also limited to what it can take in as tokens. If it is not a cased alphabetical or a number, or a symbol included in the symbol list hardcoded within the program, it will not be mentioned, and will not display an error. However as long as it was included in the list of the example, it will be recognized, including spaces.
@@ -169,7 +169,7 @@ We can initialize and then assign a value, but we cannot do both on the same lin
 Table:
 It does not have an in depth error handling besides calling that the string is syntactically incorrect.
 
-# 5. Shortcomings
+## Shortcomings
 
 The if-else implementation is not complete, and there is a bug when doing so. As of now, the only iterations that function are, Assignment, Declaration, Expressions, and Initialization.
 Due to time constraints, not able to complete the list of major functions for Conditional(),MoreID(),MoreStatements(), Relop().
